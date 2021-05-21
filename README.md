@@ -6,3 +6,8 @@ This project help to learn and understand functional programming, lambdas, strea
 <img width="858" alt="image" src="https://user-images.githubusercontent.com/45977153/119151223-2dca9080-ba1d-11eb-999e-574fa73463b0.png">
 <img width="858" alt="image" src="https://user-images.githubusercontent.com/45977153/119151328-48046e80-ba1d-11eb-9e55-b2f3c3dada56.png">
 <img width="858" alt="image" src="https://user-images.githubusercontent.com/45977153/119151372-53579a00-ba1d-11eb-975f-d39363a7e808.png">
+
+
+# Result
+<img width="1402" alt="image" src="https://user-images.githubusercontent.com/45977153/119154788-80f21280-ba20-11eb-81ad-06f1a2574b55.png">
+
