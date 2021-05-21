@@ -1,6 +1,6 @@
 // @GENERATOR:play-routes-compiler
-// @SOURCE:/Users/manikhossain/Downloads/SOEN6441Project/conf/routes
-// @DATE:Fri Nov 13 13:29:45 EST 2020
+// @SOURCE:/Users/manikhossain/Downloads/TwitterLytics-using-play-scala-java-sbt/conf/routes
+// @DATE:Fri May 21 10:31:01 EDT 2021
 
 import play.api.routing.JavaScriptReverseRoute
 

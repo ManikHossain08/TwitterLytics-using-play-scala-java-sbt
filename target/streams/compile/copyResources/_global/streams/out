@@ -1,4 +1,4 @@
 [0m[[0m[0mdebug[0m] [0m[0mCopy resource mappings: [0m
-[0m[[0m[0mdebug[0m] [0m[0m	(/Users/manikhossain/Downloads/SOEN6441Project/conf/logback.xml,/Users/manikhossain/Downloads/SOEN6441Project/target/scala-2.13/classes/logback.xml)[0m
-[0m[[0m[0mdebug[0m] [0m[0m	(/Users/manikhossain/Downloads/SOEN6441Project/conf/application.conf,/Users/manikhossain/Downloads/SOEN6441Project/target/scala-2.13/classes/application.conf)[0m
-[0m[[0m[0mdebug[0m] [0m[0m	(/Users/manikhossain/Downloads/SOEN6441Project/conf/routes,/Users/manikhossain/Downloads/SOEN6441Project/target/scala-2.13/classes/routes)[0m
+[0m[[0m[0mdebug[0m] [0m[0m	(/Users/manikhossain/Downloads/TwitterLytics-using-play-scala-java-sbt/conf/logback.xml,/Users/manikhossain/Downloads/TwitterLytics-using-play-scala-java-sbt/target/scala-2.13/classes/logback.xml)[0m
+[0m[[0m[0mdebug[0m] [0m[0m	(/Users/manikhossain/Downloads/TwitterLytics-using-play-scala-java-sbt/conf/application.conf,/Users/manikhossain/Downloads/TwitterLytics-using-play-scala-java-sbt/target/scala-2.13/classes/application.conf)[0m
+[0m[[0m[0mdebug[0m] [0m[0m	(/Users/manikhossain/Downloads/TwitterLytics-using-play-scala-java-sbt/conf/routes,/Users/manikhossain/Downloads/TwitterLytics-using-play-scala-java-sbt/target/scala-2.13/classes/routes)[0m

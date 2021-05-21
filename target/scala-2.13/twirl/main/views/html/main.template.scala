@@ -58,8 +58,8 @@ Seq[Any](format.raw/*2.1*/("""
 
               /*
                   -- GENERATED --
-                  DATE: 2020-11-13T13:29:45.708751
-                  SOURCE: /Users/manikhossain/Downloads/SOEN6441Project/app/views/main.scala.html
+                  DATE: 2021-05-21T10:31:02.140
+                  SOURCE: /Users/manikhossain/Downloads/TwitterLytics-using-play-scala-java-sbt/app/views/main.scala.html
                   HASH: d203bc05297e43bee3235c107eb6bf9f9bf55520
                   MATRIX: 911->1|1035->32|1062->33|1149->94|1174->99|1262->161|1276->167|1338->208|1425->269|1439->275|1499->314|1556->345|1584->352|1616->357
                   LINES: 27->1|32->2|33->3|37->7|37->7|38->8|38->8|38->8|39->9|39->9|39->9|42->12|42->12|43->13
