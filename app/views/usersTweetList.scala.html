@@ -1,0 +1,33 @@
+@(recentPost:List[twitter4j.Status])
+@main("User TweetList of Recent Posts") {
+
+	<h2>User TweetList of Recent Posts:</h2>
+	<hr/>
+	@if(!recentPost.isEmpty){
+		@for(status <- recentPost){
+			<div class="panel panel-primary tweet">
+					<div class="media">
+						<div class="media-right" style="padding-top:15px;">
+							<img class="avatar media-object" alt="@status.getUser().getScreenName()" src='@status.getUser().getProfileImageURLHttps()'>
+						</div>
+						<div class="media-body">
+							<div class="panel-heading">
+								<strong>@status.getUser().getName()</strong>
+								<br/>&#64<i>@status.getUser().getScreenName()</i>
+							</div>
+							<div class="panel-body">	
+								<p> @status.getText</p>
+								<span>@status.getCreatedAt</span>
+								<p>
+									<span title="Retweets" class="retweets"><span class="glyphicon glyphicon-retweet icons"></span>@if(status.getRetweetedStatus!=null){@status.getRetweetedStatus.getRetweetCount} else { 0 }</span>
+									<span title="Likes" class="favourites"><span class="glyphicon glyphicon-heart-empty icons"></span>@if(status.getRetweetedStatus!=null){@status.getRetweetedStatus.getFavoriteCount} else { 0 }</span>
+								</p>
+							</div>
+						</div>
+					</div>
+				</div>
+				<hr/>
+		}
+	}
+	</div>
+}

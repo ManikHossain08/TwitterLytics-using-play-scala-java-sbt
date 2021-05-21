@@ -1,0 +1,16 @@
+compile
+eclipse
+compile
+eclipse
+compile
+jacoco
+sbt jacoco
+jacoco
+test
+jacoco
+compile
+test
+compile
+test
+compile
+test

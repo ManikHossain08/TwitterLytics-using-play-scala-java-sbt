@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>usersTweetList.template.scala</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=2;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Jacoco Coverage Report</a> &gt; <a href="index.source.html" class="el_package">views.html</a> &gt; <span class="el_source">usersTweetList.template.scala</span></div><h1>usersTweetList.template.scala</h1><pre class="source lang-java linenums">
+package views.html
+
+import _root_.play.twirl.api.TwirlFeatureImports._
+import _root_.play.twirl.api.TwirlHelperImports._
+import _root_.play.twirl.api.Html
+import _root_.play.twirl.api.JavaScript
+import _root_.play.twirl.api.Txt
+import _root_.play.twirl.api.Xml
+import models._
+import controllers._
+import play.api.i18n._
+import views.html._
+import play.api.templates.PlayMagic._
+import java.lang._
+import java.util._
+import play.core.j.PlayMagicForJava._
+import play.mvc._
+import play.api.data.Field
+import play.data._
+import play.core.j.PlayFormsMagicForJava._
+import scala.jdk.CollectionConverters._
+
+<span class="pc" id="L24">object usersTweetList extends _root_.play.twirl.api.BaseScalaTemplate[play.twirl.api.HtmlFormat.Appendable,_root_.play.twirl.api.Format[play.twirl.api.HtmlFormat.Appendable]](play.twirl.api.HtmlFormat) with _root_.play.twirl.api.Template1[List[twitter4j.Status],play.twirl.api.HtmlFormat.Appendable] {</span>
+
+  /**/
+  def apply/*1.2*/(recentPost:List[twitter4j.Status]):play.twirl.api.HtmlFormat.Appendable = {
+<span class="fc" id="L28">    _display_ {</span>
+      {
+
+
+<span class="fc" id="L32">Seq[Any](_display_(/*2.2*/main(&quot;User TweetList of Recent Posts&quot;)/*2.40*/ {_display_(Seq[Any](format.raw/*2.42*/(&quot;&quot;&quot;</span>
+
+<span class="fc" id="L34">	&quot;&quot;&quot;),format.raw/*4.2*/(&quot;&quot;&quot;&lt;h2&gt;User TweetList of Recent Posts:&lt;/h2&gt;</span>
+	&lt;hr/&gt;
+<span class="pc bpc" id="L36" title="1 of 2 branches missed.">	&quot;&quot;&quot;),_display_(/*6.3*/if(!recentPost.isEmpty)/*6.26*/{_display_(Seq[Any](format.raw/*6.27*/(&quot;&quot;&quot;</span>
+<span class="fc" id="L37">		&quot;&quot;&quot;),_display_(/*7.4*/for(status &lt;- recentPost) yield /*7.29*/{_display_(Seq[Any](format.raw/*7.30*/(&quot;&quot;&quot;</span>
+			&quot;&quot;&quot;),format.raw/*8.4*/(&quot;&quot;&quot;&lt;div class=&quot;panel panel-primary tweet&quot;&gt;
+					&lt;div class=&quot;media&quot;&gt;
+						&lt;div class=&quot;media-right&quot; style=&quot;padding-top:15px;&quot;&gt;
+							&lt;img class=&quot;avatar media-object&quot; alt=&quot;&quot;&quot;&quot;),_display_(/*11.47*/status/*11.53*/.getUser().getScreenName()),format.raw/*11.79*/(&quot;&quot;&quot;&quot; src='&quot;&quot;&quot;),_display_(/*11.87*/status/*11.93*/.getUser().getProfileImageURLHttps()),format.raw/*11.129*/(&quot;&quot;&quot;'&gt;
+						&lt;/div&gt;
+						&lt;div class=&quot;media-body&quot;&gt;
+							&lt;div class=&quot;panel-heading&quot;&gt;
+								&lt;strong&gt;&quot;&quot;&quot;),_display_(/*15.18*/status/*15.24*/.getUser().getName()),format.raw/*15.44*/(&quot;&quot;&quot;&lt;/strong&gt;
+								&lt;br/&gt;&amp;#64&lt;i&gt;&quot;&quot;&quot;),_display_(/*16.22*/status/*16.28*/.getUser().getScreenName()),format.raw/*16.54*/(&quot;&quot;&quot;&lt;/i&gt;
+							&lt;/div&gt;
+							&lt;div class=&quot;panel-body&quot;&gt;	
+								&lt;p&gt; &quot;&quot;&quot;),_display_(/*19.14*/status/*19.20*/.getText),format.raw/*19.28*/(&quot;&quot;&quot;&lt;/p&gt;
+								&lt;span&gt;&quot;&quot;&quot;),_display_(/*20.16*/status/*20.22*/.getCreatedAt),format.raw/*20.35*/(&quot;&quot;&quot;&lt;/span&gt;
+								&lt;p&gt;
+									&lt;span title=&quot;Retweets&quot; class=&quot;retweets&quot;&gt;&lt;span class=&quot;glyphicon glyphicon-retweet icons&quot;&gt;&lt;/span&gt;&quot;&quot;&quot;),_display_(/*22.106*/if(status.getRetweetedStatus!=null)/*22.141*/{_display_(_display_(/*22.143*/status/*22.149*/.getRetweetedStatus.getRetweetCount))}/*22.186*/else/*22.191*/{_display_(Seq[Any](format.raw/*22.192*/(&quot;&quot;&quot; &quot;&quot;&quot;),format.raw/*22.193*/(&quot;&quot;&quot;0 &quot;&quot;&quot;)))}),format.raw/*22.196*/(&quot;&quot;&quot;&lt;/span&gt;
+									&lt;span title=&quot;Likes&quot; class=&quot;favourites&quot;&gt;&lt;span class=&quot;glyphicon glyphicon-heart-empty icons&quot;&gt;&lt;/span&gt;&quot;&quot;&quot;),_display_(/*23.109*/if(status.getRetweetedStatus!=null)/*23.144*/{_display_(_display_(/*23.146*/status/*23.152*/.getRetweetedStatus.getFavoriteCount))}/*23.190*/else/*23.195*/{_display_(Seq[Any](format.raw/*23.196*/(&quot;&quot;&quot; &quot;&quot;&quot;),format.raw/*23.197*/(&quot;&quot;&quot;0 &quot;&quot;&quot;)))}),format.raw/*23.200*/(&quot;&quot;&quot;&lt;/span&gt;
+								&lt;/p&gt;
+							&lt;/div&gt;
+						&lt;/div&gt;
+					&lt;/div&gt;
+				&lt;/div&gt;
+				&lt;hr/&gt;
+<span class="fc" id="L60">		&quot;&quot;&quot;)))}),format.raw/*30.4*/(&quot;&quot;&quot;</span>
+<span class="fc" id="L61">	&quot;&quot;&quot;)))}),format.raw/*31.3*/(&quot;&quot;&quot;</span>
+<span class="fc" id="L62">	&quot;&quot;&quot;),format.raw/*32.2*/(&quot;&quot;&quot;&lt;/div&gt;</span>
+&quot;&quot;&quot;)))}))
+      }
+    }
+  }
+
+<span class="fc" id="L68">  def render(recentPost:List[twitter4j.Status]): play.twirl.api.HtmlFormat.Appendable = apply(recentPost)</span>
+
+<span class="nc" id="L70">  def f:((List[twitter4j.Status]) =&gt; play.twirl.api.HtmlFormat.Appendable) = (recentPost) =&gt; apply(recentPost)</span>
+
+<span class="nc" id="L72">  def ref: this.type = this</span>
+
+}
+
+
+              /*
+                  -- GENERATED --
+                  DATE: 2020-11-13T13:29:45.749999
+                  SOURCE: /Users/manikhossain/Downloads/SOEN6441Project/app/views/usersTweetList.scala.html
+                  HASH: e686ba2c386f6a6655370661fc4e6c5e44d1e5dd
+                  MATRIX: 932-&gt;1|1061-&gt;38|1107-&gt;76|1146-&gt;78|1175-&gt;81|1250-&gt;131|1281-&gt;154|1319-&gt;155|1348-&gt;159|1388-&gt;184|1426-&gt;185|1456-&gt;189|1652-&gt;358|1667-&gt;364|1714-&gt;390|1749-&gt;398|1764-&gt;404|1822-&gt;440|1948-&gt;539|1963-&gt;545|2004-&gt;565|2062-&gt;596|2077-&gt;602|2124-&gt;628|2216-&gt;693|2231-&gt;699|2260-&gt;707|2307-&gt;727|2322-&gt;733|2356-&gt;746|2509-&gt;871|2554-&gt;906|2585-&gt;908|2601-&gt;914|2649-&gt;951|2663-&gt;956|2703-&gt;957|2733-&gt;958|2768-&gt;961|2912-&gt;1077|2957-&gt;1112|2988-&gt;1114|3004-&gt;1120|3053-&gt;1158|3067-&gt;1163|3107-&gt;1164|3137-&gt;1165|3172-&gt;1168|3286-&gt;1252|3319-&gt;1255|3348-&gt;1257
+                  LINES: 27-&gt;1|32-&gt;2|32-&gt;2|32-&gt;2|34-&gt;4|36-&gt;6|36-&gt;6|36-&gt;6|37-&gt;7|37-&gt;7|37-&gt;7|38-&gt;8|41-&gt;11|41-&gt;11|41-&gt;11|41-&gt;11|41-&gt;11|41-&gt;11|45-&gt;15|45-&gt;15|45-&gt;15|46-&gt;16|46-&gt;16|46-&gt;16|49-&gt;19|49-&gt;19|49-&gt;19|50-&gt;20|50-&gt;20|50-&gt;20|52-&gt;22|52-&gt;22|52-&gt;22|52-&gt;22|52-&gt;22|52-&gt;22|52-&gt;22|52-&gt;22|52-&gt;22|53-&gt;23|53-&gt;23|53-&gt;23|53-&gt;23|53-&gt;23|53-&gt;23|53-&gt;23|53-&gt;23|53-&gt;23|60-&gt;30|61-&gt;31|62-&gt;32
+                  -- GENERATED --
+              */
+          
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>

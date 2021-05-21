@@ -1,0 +1,92 @@
+@import play.mvc.Http.Request
+@(tweets: List[Tweet], form: Form[TweetData])(implicit request: Request, messages: play.i18n.Messages)
+
+@main("Tweets") {
+
+    <h1>Welcome to Tweetanlytics</h1>
+    
+         
+    
+    @helper.form(routes.TweetController.fetchTweets) {
+    @helper.CSRF.formField
+    
+        <div class="input-group mb-1">
+        @helper.inputText(form("keyword"), 'placeholder->"Search Keyword", 'class->"form-control")
+        </div>
+       
+        <button type="submit">Go</button>
+
+    }
+    <style>
+        table, th, td {
+         border: 1px solid black;
+        }
+        </style>
+    @if(!tweets.isEmpty)    {
+    <table>
+        <thead>
+          
+        </thead>
+        <tbody>
+        
+        
+       <tr>
+        <td><b>SEACH TERM <a href=@routes.TweetController.wordLevelStatistics(tweets.get(0).keyword) target="_blank">Get stats for keyword @tweets.get(0).keyword</a></b></td>
+        <td><b>USER NAME</b></td>
+        <td><b>LOCATION</b></td>
+        <td><b>TWEETS</b></td>
+        <td><b>SENTIMENTS</b></td>
+        
+
+        </tr>
+        
+        
+        @for(t <- tweets) {
+            
+           <tr>
+            <td>@t.keyword</td>
+            <td> <a href=@routes.TweetController.fetchUsers(t.getUser.getScreenName) target="_blank"> @t.getUser.getName</a></td>
+            <td> @t.getUser.getLocation</a></td>
+            <td>@t.getTweet
+            
+            @for(s <- t.getArrayoftags){
+            <a href=@routes.TweetController.fetchHashtags(t.getHashtag)  target="_blank">@s.getText</a>
+            
+            }
+            @{
+        if(t.getSentimentRatings <0){
+             <td>:-(</td>
+            }
+        else if(t.getSentimentRatings == 0){
+            <td>:-|</td>
+            }
+         else if(t.getSentimentRatings >0){
+             <td>:-)</td>
+            }
+        }
+            
+           </tr>
+       
+        }
+        
+        </tbody>
+       
+    </table>
+}
+    <hr/>
+    
+   
+
+    @* Global errors are not tied to any particular form field *@
+    @if(form.hasGlobalErrors) {
+        @form.globalErrors.asScala.map { error: play.data.validation.ValidationError =>
+            <div>
+                @error.key: @error.message
+            </div>
+        }
+    }
+
+    
+    
+
+}

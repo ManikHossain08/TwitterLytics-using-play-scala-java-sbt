@@ -1,0 +1,508 @@
+<?xml version="1.0" encoding="utf-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TweetController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=2;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Jacoco Coverage Report</a> &gt; <a href="index.source.html" class="el_package">controllers</a> &gt; <span class="el_source">TweetController.java</span></div><h1>TweetController.java</h1><pre class="source lang-java linenums">package controllers;
+
+import models.Tweet;
+import models.User;
+
+import play.cache.SyncCacheApi;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import play.data.Form;
+import play.data.FormFactory;
+import play.i18n.MessagesApi;
+import play.mvc.*;
+import twitter4j.GeoLocation;
+import twitter4j.HashtagEntity;
+import twitter4j.Place;
+import twitter4j.Query;
+import twitter4j.QueryResult;
+import twitter4j.ResponseList;
+import twitter4j.Status;
+import twitter4j.Twitter;
+import twitter4j.TwitterException;
+import twitter4j.TwitterFactory;
+import twitter4j.conf.ConfigurationBuilder;
+
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
+import com.typesafe.config.Config;
+import com.typesafe.config.ConfigFactory;
+
+import java.io.FileInputStream;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Scanner;
+import java.util.Stack;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CompletionStage;
+import java.util.function.Function;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+import java.util.Objects;
+
+import play.mvc.Http.Session;
+import play.mvc.Result;
+
+import static java.util.stream.Collectors.toList;
+import static play.libs.Scala.asScala;
+
+/**
+ * An example of form processing.
+ *
+ * https://playframework.com/documentation/latest/JavaForms
+ */
+@Singleton
+public class TweetController extends Controller {
+
+	private final Form&lt;TweetData&gt; form;
+	private MessagesApi messagesApi;
+	private List&lt;Tweet&gt; tweets;
+	private final List&lt;Tweet&gt; tweetsLocation;
+	private static Twitter twitter;
+	private final Config config;
+<span class="fc" id="L72">	private static List&lt;List&lt;Tweet&gt;&gt; orderedTweets = null;</span>
+	private Map&lt;String, Long&gt; finalMap; //for wordLevelStats
+	private List&lt;CompletableFuture&lt;Tweet&gt;&gt; tweethashtags; //for fetchHashtags
+
+	
+	@Inject
+	private SyncCacheApi cache;
+	
+	/**
+	 * This constructor is for authentication of twitter API and initiates variables
+	 * 
+	 * @param formFactory
+	 * @param messagesApi
+	 * @param cache
+	 * 
+	 * @author Md Manik Hossain
+	 */
+	@Inject
+<span class="fc" id="L90">	public TweetController(FormFactory formFactory, MessagesApi messagesApi, SyncCacheApi cache) {</span>
+<span class="fc" id="L91">		this.tweets = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L92">		this.tweetsLocation = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L93">		this.form = formFactory.form(TweetData.class);</span>
+<span class="fc" id="L94">		this.messagesApi = messagesApi;</span>
+<span class="fc" id="L95">		config = ConfigFactory.load();</span>
+<span class="fc" id="L96">		this.orderedTweets = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L97">		this.cache = cache;</span>
+
+<span class="fc" id="L99">		ConfigurationBuilder cb = new ConfigurationBuilder();</span>
+<span class="fc" id="L100">		cb.setDebugEnabled(true).setOAuthConsumerKey(config.getString(&quot;CONSUMER_KEY&quot;))</span>
+<span class="fc" id="L101">				.setOAuthConsumerSecret(config.getString(&quot;CONSUMER_SECRET&quot;))</span>
+<span class="fc" id="L102">				.setOAuthAccessToken(config.getString(&quot;ACCESS_TOKEN&quot;))</span>
+<span class="fc" id="L103">				.setOAuthAccessTokenSecret(config.getString(&quot;ACCESS_TOKEN_SECRET&quot;));</span>
+<span class="fc" id="L104">		TwitterFactory tf = new TwitterFactory(cb.build());</span>
+<span class="fc" id="L105">		twitter = tf.getInstance();</span>
+
+<span class="fc" id="L107">	}</span>
+	
+	/**
+	 * This will give the welcome link
+	 * 
+	 * @return the index page
+	 * 
+	 * @author Kunjal Kotadia
+	 */
+	public Result index() {
+<span class="fc" id="L117">		this.tweets = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L118">		this.orderedTweets = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L119">		return ok(views.html.index.render());</span>
+	}
+
+	// display the list
+	public CompletionStage&lt;Result&gt; listTweets(Http.Request request) {
+<span class="fc" id="L124">		return CompletableFuture.completedFuture(ok(views.html.listTweet.render(tweets, form, request, messagesApi.preferred(request))));</span>
+	}
+	
+	/**
+	 * This method work as main method for controller, which get the keyword enter by the user
+	 * and query will execute using this keyword to fetch the 10 tweets related to that word.
+	 * Also it will give the User, location, Hyperlinked hashtags and sentiments of each tweets
+	 * 
+	 * @param request
+	 * 
+	 * @return Result and will be redirect on listTweet page
+	 * 
+	 * @author Vasu Dadhania
+	 */
+	
+	public CompletionStage&lt;Result&gt; fetchTweets(Http.Request request) {
+<span class="fc" id="L140">		final Form&lt;TweetData&gt; boundForm = form.bindFromRequest(request);</span>
+
+<span class="fc bfc" id="L142" title="All 2 branches covered.">		if (boundForm.hasErrors()) {</span>
+			// logger.error(&quot;errors = {}&quot;, boundForm.errors());
+<span class="nc" id="L144">			return CompletableFuture.completedFuture(badRequest(views.html.listTweet.render(tweets, boundForm, request, messagesApi.preferred(request))));</span>
+		} else {
+<span class="fc" id="L146">			CompletableFuture&lt;List&lt;Tweet&gt;&gt; sessionComp = CompletableFuture.supplyAsync(() -&gt; {</span>
+<span class="fc" id="L147">			TweetData data = boundForm.get();</span>
+<span class="fc" id="L148">			data.setkeyword(data.getkeyword());</span>
+<span class="fc" id="L149">			System.out.println(&quot;keyword&quot; + data.getkeyword());</span>
+<span class="fc" id="L150">			Query query = new Query(&quot;\\\&quot;&quot; + data.getkeyword() + &quot;\\\&quot;&quot; + &quot; +exclude:retweets&quot;);</span>
+<span class="fc" id="L151">			query.setCount(10);</span>
+
+<span class="fc" id="L153">			List&lt;Tweet&gt; resultTweets = null;</span>
+			try {
+
+<span class="fc" id="L156">				QueryResult result = twitter.search(query);</span>
+
+<span class="fc" id="L158">				List&lt;Status&gt; tweets = result.getTweets();</span>
+				User user;
+				Tweet tweet;
+<span class="fc" id="L161">				ArrayList&lt;String&gt; h = new ArrayList&lt;String&gt;();</span>
+
+<span class="fc" id="L163">				resultTweets = new ArrayList&lt;&gt;();</span>
+
+<span class="fc" id="L165">				Session session = new Session();</span>
+<span class="fc" id="L166">				session.adding(data.getkeyword(), &quot;vasu&quot;);</span>
+
+<span class="fc" id="L168">				Optional&lt;List&lt;Tweet&gt;&gt; cacheData = cache.get(data.getkeyword());</span>
+
+<span class="pc bpc" id="L170" title="1 of 2 branches missed.">				if (cacheData.isPresent()) {</span>
+
+<span class="nc" id="L172">					resultTweets = cacheData.get();</span>
+
+<span class="nc" id="L174">					System.out.println(&quot;from the cache&quot;);</span>
+				} else {
+
+<span class="fc bfc" id="L177" title="All 2 branches covered.">					for (Status t : tweets) {</span>
+
+						
+<span class="fc" id="L180">						String tweetData = t.getText();</span>
+//						System.out.println(&quot;keyword&quot; + data.getkeyword());
+//						System.out.println(&quot;tweet&quot; + tweetData);
+
+<span class="fc" id="L184">						user = new User();</span>
+<span class="fc" id="L185">						user.setName(t.getUser().getName());</span>
+<span class="fc" id="L186">						user.setLocation(t.getUser().getLocation());</span>
+<span class="fc" id="L187">						user.setScreenName(t.getUser().getScreenName());</span>
+
+<span class="fc" id="L189">						tweet = new Tweet(data.getkeyword());</span>
+<span class="fc" id="L190">						tweet.setUser(user);</span>
+<span class="fc" id="L191">						tweet.setTweet(t.getText());</span>
+<span class="fc" id="L192">						tweet.setArrayoftags(t.getHashtagEntities());</span>
+<span class="fc" id="L193">						tweet.setSentimentRatings(tweetSentiments(t.getText()));</span>
+
+<span class="fc" id="L195">						HashtagEntity[] tags = t.getHashtagEntities();</span>
+<span class="pc bpc" id="L196" title="1 of 2 branches missed.">						for (HashtagEntity hashtagEntity : tags) {</span>
+
+<span class="nc" id="L198">							String hashtag = &quot;#&quot; + hashtagEntity.getText();</span>
+
+<span class="nc" id="L200">							h.add(hashtag);</span>
+<span class="nc" id="L201">							tweet.setHashtag(hashtag);</span>
+
+						}
+
+<span class="fc" id="L205">						resultTweets.add(tweet);</span>
+<span class="fc" id="L206">						this.tweets.add(tweet);</span>
+<span class="fc" id="L207">					}</span>
+
+					// else end
+				}
+<span class="fc" id="L211">				cache.set(data.getkeyword(), resultTweets, 60 * 15);</span>
+
+<span class="fc" id="L213">				orderedTweets.add(resultTweets);</span>
+<span class="fc" id="L214">				organizeTweetList();</span>
+<span class="fc" id="L215">				return this.tweets;</span>
+<span class="nc" id="L216">			} catch (TwitterException exp) {</span>
+				// logger.error(&quot;Exception in queryApi method&quot;, exp);
+<span class="nc" id="L218">				return this.tweets;</span>
+			}
+			});
+<span class="fc" id="L221">			return sessionComp.thenApply(m -&gt; redirect(routes.TweetController.listTweets()).addingToSession(request, boundForm.get().getkeyword(), &quot;vasu&quot;));</span>
+		}
+	}
+	/**
+	 * This method has been implemented as a helper method of the fetchTweets() because we need organize our tweets
+	 * on home page in ordered way (new search list on top of lists). Hence this method will organize the tweets 
+	 * in the this.tweets variable.
+	 * 
+	 * @param no parameter need because we have global variable in the controller.
+	 *            
+	 * @return nothing will be returned because we are setting value to the global variable.
+	 * 
+	 * @author Md Manik Hossain
+	 */
+	
+	private void organizeTweetList() {
+<span class="fc" id="L237">		this.tweets = new ArrayList&lt;&gt;();</span>
+<span class="fc bfc" id="L238" title="All 2 branches covered.">		for (int i = orderedTweets.size() - 1; i &gt;= 0; i--) {</span>
+<span class="fc bfc" id="L239" title="All 2 branches covered.">			for (Tweet list : orderedTweets.get(i)) {</span>
+<span class="fc" id="L240">				this.tweets.add(list);</span>
+<span class="fc" id="L241">			}</span>
+		}
+
+<span class="fc" id="L244">	}</span>
+	
+	/**
+	 * This method will filter out the hashtags of the tweet and make it hyperlinked,
+	 * to fetch other tweets using that hashtag
+	 * 
+	 * @param hashtag
+	 * @param request
+	 * @return tweets which include the particular hashtags
+	 * 			&lt;code&gt;Result&lt;/code&gt; 
+	 * @author Vasu Dadhania
+	 */
+	
+	public CompletionStage&lt;Result&gt; fetchHashtags(final String hashtag, Http.Request request) {
+    	
+<span class="fc" id="L259">    	System.out.println(&quot;location&quot;+hashtag);</span>
+    	
+<span class="fc" id="L261">    	Query query = new Query(hashtag);</span>
+<span class="fc" id="L262">		query.setCount(10);</span>
+		try {
+		    QueryResult result;
+<span class="fc" id="L265">		    result = twitter.search(query);</span>
+			
+<span class="fc" id="L267">			tweethashtags = result.getTweets().stream().map(t -&gt; CompletableFuture.supplyAsync(</span>
+<span class="fc" id="L268">					() -&gt; new Tweet(new User(t.getUser().getName(), t.getUser().getLocation()), t.getText(), hashtag)))</span>
+<span class="fc" id="L269">			.collect(Collectors.toList());</span>
+<span class="nc" id="L270">		} catch (TwitterException exp) {</span>
+			//logger.error(&quot;Exception in queryApi method&quot;, exp);
+<span class="fc" id="L272">		}</span>
+<span class="fc" id="L273">		return CompletableFuture.completedFuture(Results.ok(views.html.location.render(tweethashtags.stream().map(CompletableFuture::join).collect(Collectors.toList()))));</span>
+    }
+	
+	/**
+	 * Takes the user screenName and fetch the user object and list of tweets for that user asynchronously
+	 * 
+	 * @param screenName the users screenName
+	 *            
+	 * @return user's profile and its recent posts as a completableFuture of type
+	 *         &lt;code&gt;Result&lt;/code&gt;
+	 * @author Md Manik Hossain
+	 */
+	
+	public CompletionStage&lt;Result&gt; fetchUsers(final String screenName) {
+
+		CompletableFuture&lt;twitter4j.User&gt; userInfo;
+
+<span class="fc" id="L290">		userInfo = CompletableFuture.supplyAsync(() -&gt; {</span>
+<span class="fc" id="L291">			twitter4j.User user = null;</span>
+			try {
+<span class="fc" id="L293">				user = twitter.showUser(screenName);</span>
+<span class="nc" id="L294">			} catch (TwitterException exp) {</span>
+				// logger.error(&quot;Exceptin while fetching user&quot;);
+<span class="fc" id="L296">			}</span>
+<span class="fc" id="L297">			return user;</span>
+		});
+		
+		
+		CompletableFuture&lt;ResponseList&lt;Status&gt;&gt; latestPost;
+
+<span class="fc" id="L303">		latestPost = CompletableFuture.supplyAsync(() -&gt; {</span>
+<span class="fc" id="L304">			ResponseList&lt;Status&gt; recentPost = null;</span>
+			try {
+<span class="fc" id="L306">				recentPost = twitter.getUserTimeline(screenName);</span>
+<span class="fc" id="L307">				recentPost.stream().limit(10).collect(toList());</span>
+<span class="nc" id="L308">			} catch (TwitterException exp) {</span>
+				// logger.error(&quot;Exceptin while fetching user status&quot;);
+<span class="fc" id="L310">			}</span>
+<span class="fc" id="L311">			return recentPost;</span>
+		});
+
+
+<span class="fc" id="L315">		return userInfo.thenCombine(latestPost, (user, post) -&gt; ok(views.html.users.render(user, post)));</span>
+
+	}
+	
+	/**
+	 * Takes the user screenName list of recent tweets for that user asynchronously
+	 * 
+	 * This method has been implemented to serve a purpose of viewing all the latest in a separate page.   
+	 * 
+	 * @param screenName the users screenName
+	 *            
+	 * @return recent posts of a pecific user as a completableFuture of type
+	 *         &lt;code&gt;Result&lt;/code&gt;
+	 * @author Md Manik Hossain
+	 */
+	public CompletionStage&lt;Result&gt; getUserTweets(final String screenName) {
+
+		CompletableFuture&lt;ResponseList&lt;Status&gt;&gt; latestPost;
+
+<span class="fc" id="L334">		latestPost = CompletableFuture.supplyAsync(() -&gt; {</span>
+<span class="fc" id="L335">			ResponseList&lt;Status&gt; recentPost = null;</span>
+			try {
+<span class="fc" id="L337">				recentPost = twitter.getUserTimeline(screenName);</span>
+<span class="nc" id="L338">			} catch (TwitterException exp) {</span>
+				// logger.error(&quot;Exceptin while fetching user&quot;);
+<span class="fc" id="L340">			}</span>
+<span class="fc" id="L341">			return recentPost;</span>
+		});
+
+<span class="fc" id="L344">		return latestPost.thenApply(post -&gt; ok(views.html.usersTweetList.render(post)));</span>
+	}
+	
+	
+	/**
+	 * This method will analyze the sentiments of the tweet.
+	 * It will calculate the count of happy and sad words and calculate the average according to their ratings given in dataset
+	 * 
+	 * @param text tweet that need to analyze
+	 * 
+	 * @return sum of ratings to analyze the sentiment
+	 * 
+	 * @author Kunjal Kotadia
+	 */
+	public static int tweetSentiments(String text) {
+
+<span class="fc" id="L360">		Scanner sc = null;</span>
+
+		try {
+<span class="fc" id="L363">			sc = new Scanner(new FileInputStream(&quot;public//dataSet//SentimentData.txt&quot;));</span>
+<span class="nc" id="L364">		} catch (Exception e) {</span>
+<span class="nc" id="L365">			System.out.println(&quot;In Catch&quot;);</span>
+<span class="fc" id="L366">		}</span>
+
+		String s;
+<span class="fc" id="L369">		Tweet[] tData = new Tweet[2477];</span>
+<span class="fc" id="L370">		int i = 0;</span>
+
+<span class="fc bfc" id="L372" title="All 2 branches covered.">		while (sc.hasNextLine()) {</span>
+<span class="fc" id="L373">			s = sc.nextLine();</span>
+<span class="fc" id="L374">			String finalString = &quot;&quot;;</span>
+<span class="fc" id="L375">			String tempArr[] = s.split(&quot;\\s+&quot;);</span>
+<span class="fc" id="L376">			Tweet t = new Tweet(text);</span>
+
+<span class="fc bfc" id="L378" title="All 2 branches covered.">			if (tempArr.length &gt; 2) {</span>
+<span class="fc bfc" id="L379" title="All 2 branches covered.">				for (int j = 0; j &lt; tempArr.length - 1; j++) {</span>
+<span class="fc bfc" id="L380" title="All 2 branches covered.">					if (j != tempArr.length - 2) {</span>
+<span class="fc" id="L381">						finalString = finalString.concat(tempArr[j] + &quot; &quot;);</span>
+					} else {
+<span class="fc" id="L383">						finalString = finalString.concat(tempArr[j]);</span>
+					}
+				}
+			} else {
+<span class="fc" id="L387">				finalString = tempArr[0];</span>
+			}
+<span class="fc" id="L389">			t.setSentimentData(finalString);</span>
+<span class="fc" id="L390">			t.setSentimentRatings(Integer.parseInt(tempArr[tempArr.length - 1]));</span>
+<span class="fc" id="L391">			tData[i] = t;</span>
+<span class="fc" id="L392">			i++;</span>
+<span class="fc" id="L393">		}</span>
+<span class="fc" id="L394">		sc.close();</span>
+
+<span class="fc" id="L396">		text = text.toLowerCase();</span>
+<span class="fc" id="L397">		int sum = 0;</span>
+
+<span class="fc" id="L399">		Map&lt;String, Integer&gt; map = new HashMap&lt;&gt;();</span>
+<span class="fc" id="L400">		String[] tArr = text.split(&quot; &quot;);</span>
+
+<span class="fc bfc" id="L402" title="All 2 branches covered.">		for (int m = 0; m &lt; tArr.length; m++) {</span>
+<span class="fc bfc" id="L403" title="All 2 branches covered.">			if (tArr[m].contains(&quot;,&quot;)) {</span>
+<span class="fc" id="L404">				tArr[m].replace(&quot;,&quot;, &quot;&quot;);</span>
+			}
+
+<span class="fc bfc" id="L407" title="All 2 branches covered.">			if (tArr[m].contains(&quot;!&quot;)) {</span>
+<span class="fc" id="L408">				tArr[m].replace(&quot;!&quot;, &quot;&quot;);</span>
+			}
+
+<span class="fc bfc" id="L411" title="All 2 branches covered.">			if (tArr[m].contains(&quot;.&quot;)) {</span>
+<span class="fc" id="L412">				tArr[m].replace(&quot;.&quot;, &quot;&quot;);</span>
+			}
+
+<span class="pc bpc" id="L415" title="1 of 2 branches missed.">			if (tArr[m].contains(&quot;#&quot;)) {</span>
+<span class="nc" id="L416">				tArr[m].replace(&quot;#&quot;, &quot;&quot;);</span>
+			}
+<span class="fc bfc" id="L418" title="All 2 branches covered.">			if (tArr[m].contains(&quot;@&quot;)) {</span>
+<span class="fc" id="L419">				tArr[m].replace(&quot;@&quot;, &quot;&quot;);</span>
+			}
+<span class="pc bpc" id="L421" title="1 of 2 branches missed.">			if (tArr[m].contains(&quot;;&quot;)) {</span>
+<span class="nc" id="L422">				tArr[m].replace(&quot;;&quot;, &quot;&quot;);</span>
+			}
+		}
+
+<span class="fc bfc" id="L426" title="All 2 branches covered.">		for (String str : tArr) {</span>
+<span class="fc" id="L427">			map.putIfAbsent(str, 0);</span>
+<span class="fc" id="L428">			map.put(str, map.get(str) + 1);</span>
+		}
+
+<span class="fc bfc" id="L431" title="All 2 branches covered.">		for (Map.Entry mapElement : map.entrySet()) {</span>
+<span class="fc" id="L432">			String str = (String) mapElement.getKey();</span>
+<span class="fc" id="L433">			int factor = (int) mapElement.getValue();</span>
+<span class="fc bfc" id="L434" title="All 2 branches covered.">			for (int p = 0; p &lt; tData.length; p++) {</span>
+<span class="fc bfc" id="L435" title="All 2 branches covered.">				if (tData[p].getSentimentData().equals(str)) {</span>
+<span class="fc" id="L436">					sum = sum + factor * tData[p].getSentimentRatings();</span>
+				}
+			}
+<span class="fc" id="L439">		}</span>
+<span class="fc" id="L440">		return sum;</span>
+	}
+	
+	/**
+	 * Takes the search word and provides a count of unique words from 250 tweets in descending order.
+	 * 
+	 * This method has been implemented to provide an analysis of the most common words used while tweeting.   
+	 * 
+	 * @param Utilizes a string variable keyword
+	 *            
+	 * @return returns of map of key (String) and value (Long) pairs, encapsulated in CompletionStage type.
+	 *         &lt;code&gt;Map&lt;String, Long&gt;&lt;/code&gt;
+	 * @author Samuel Vineeth
+	 */
+	public CompletionStage&lt;Result&gt; wordLevelStatistics(String keyword) {
+		
+		CompletableFuture&lt;Map&lt;String, Long&gt;&gt; mapper;
+<span class="fc" id="L457">		finalMap = new LinkedHashMap&lt;&gt;();</span>
+<span class="fc" id="L458">		mapper = CompletableFuture.supplyAsync(() -&gt; {</span>
+<span class="pc bpc" id="L459" title="2 of 4 branches missed.">    	if(keyword.equals(&quot;&quot;)==false &amp;&amp; keyword.equals(&quot;&quot;)==false) {</span>
+<span class="fc" id="L460">	      Query query = new Query(keyword);</span>
+<span class="fc" id="L461">	  	  int numberOfTweets = 250;</span>
+<span class="fc" id="L462">	  	  long lastID = Long.MAX_VALUE;</span>
+<span class="fc" id="L463">	  	  ArrayList&lt;Status&gt; tweets = new ArrayList&lt;Status&gt;();</span>
+<span class="fc" id="L464">	  	  List&lt;Map&lt;String, Long&gt;&gt; distinctWords = new ArrayList&lt;Map&lt;String, Long&gt;&gt;();</span>
+<span class="fc bfc" id="L465" title="All 2 branches covered.">	  	  while (tweets.size () &lt; numberOfTweets) {</span>
+<span class="pc bpc" id="L466" title="1 of 2 branches missed.">	  	    if (numberOfTweets - tweets.size() &gt; 1)</span>
+<span class="fc" id="L467">	  	      query.setCount(100);</span>
+	  	    else 
+<span class="nc" id="L469">	  	      query.setCount(numberOfTweets - tweets.size());</span>
+	  	    try {
+<span class="fc" id="L471">	  	      QueryResult result = twitter.search(query);</span>
+<span class="fc" id="L472">	  	      tweets.addAll(result.getTweets());</span>
+<span class="fc" id="L473">	  	      distinctWords = Stream.concat(distinctWords.parallelStream(), tweets.parallelStream()</span>
+<span class="fc" id="L474">	  	    	        .map(t -&gt; Arrays.asList(t.getText().toLowerCase().split(&quot; &quot;)).parallelStream().collect(Collectors.groupingBy(</span>
+<span class="fc" id="L475">	                              Function.identity(), Collectors.counting()</span>
+<span class="fc" id="L476">	                      ))).collect(Collectors.toList()).parallelStream()).collect(Collectors.toList());</span>
+<span class="fc bfc" id="L477" title="All 2 branches covered.">	  	      for (Status t: tweets) </span>
+<span class="fc bfc" id="L478" title="All 2 branches covered.">	  	        if(t.getId() &lt; lastID) lastID = t.getId();</span>
+	  	    }
+
+<span class="nc" id="L481">	  	    catch (TwitterException te) {</span>
+<span class="nc" id="L482">	  	    	System.out.println(&quot;Couldn't connect: &quot; + te);</span>
+<span class="fc" id="L483">	  	    }; </span>
+<span class="fc" id="L484">	  	    query.setMaxId(lastID-1);</span>
+	  	  }
+<span class="fc" id="L486">	  	  	Optional&lt;Map&lt;String, Long&gt;&gt; tempMaps = distinctWords.stream().reduce((m1, m2) -&gt; {</span>
+<span class="fc" id="L487">	            return Stream.concat(m1.entrySet().parallelStream(), m2.entrySet().parallelStream())</span>
+<span class="fc" id="L488">	                    .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue,</span>
+<span class="fc" id="L489">	                            (m1Num, m2Num) -&gt; m1Num + m2Num));</span>
+		  	    });
+		  	     
+<span class="fc" id="L492">		  	    tempMaps.get().entrySet().parallelStream().sorted(Map.Entry.&lt;String, Long&gt;comparingByValue()</span>
+<span class="fc" id="L493">		                .reversed()).forEachOrdered(e -&gt; finalMap.put(e.getKey(), e.getValue()));</span>
+		  	    //System.out.println(finalMap.entrySet());
+<span class="pc bpc" id="L495" title="1 of 2 branches missed.">		  	    if(finalMap.containsKey(&quot;rt&quot;)) {</span>
+<span class="fc" id="L496">		  	    	finalMap.remove(&quot;rt&quot;);</span>
+		  	    }
+    	}
+    			
+<span class="fc" id="L500">		  	    return finalMap;</span>
+		});
+
+<span class="fc" id="L503">		return mapper.thenApply(map -&gt; ok(views.html.wordLevelStats.render(map)));</span>
+			
+	 }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>

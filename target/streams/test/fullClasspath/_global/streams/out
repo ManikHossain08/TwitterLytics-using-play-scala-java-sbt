@@ -1,0 +1,31 @@
+[0m[[0m[0minfo[0m] [0m[0mInstrumenting 28 classes to /Users/manikhossain/Downloads/SOEN6441Project/target/scala-2.13/jacoco/instrumented-classes[0m
+[0m[[0m[0mdebug[0m] [0m[0minstrumenting products: /Users/manikhossain/Downloads/SOEN6441Project/target/scala-2.13/classes[0m
+[0m[[0m[0mdebug[0m] [0m[0mFound jacoco agent: Vector()[0m
+[0m[[0m[0mdebug[0m] [0m[0minstrumenting /Users/manikhossain/Downloads/SOEN6441Project/target/scala-2.13/classes/models/Tweet.class[0m
+[0m[[0m[0mdebug[0m] [0m[0minstrumenting /Users/manikhossain/Downloads/SOEN6441Project/target/scala-2.13/classes/models/User.class[0m
+[0m[[0m[0mdebug[0m] [0m[0minstrumenting /Users/manikhossain/Downloads/SOEN6441Project/target/scala-2.13/classes/controllers/routes$javascript.class[0m
+[0m[[0m[0mdebug[0m] [0m[0minstrumenting /Users/manikhossain/Downloads/SOEN6441Project/target/scala-2.13/classes/controllers/TweetController.class[0m
+[0m[[0m[0mdebug[0m] [0m[0minstrumenting /Users/manikhossain/Downloads/SOEN6441Project/target/scala-2.13/classes/controllers/ReverseAssets.class[0m
+[0m[[0m[0mdebug[0m] [0m[0minstrumenting /Users/manikhossain/Downloads/SOEN6441Project/target/scala-2.13/classes/controllers/TweetData.class[0m
+[0m[[0m[0mdebug[0m] [0m[0minstrumenting /Users/manikhossain/Downloads/SOEN6441Project/target/scala-2.13/classes/controllers/javascript/ReverseAssets.class[0m
+[0m[[0m[0mdebug[0m] [0m[0minstrumenting /Users/manikhossain/Downloads/SOEN6441Project/target/scala-2.13/classes/controllers/javascript/ReverseTweetController.class[0m
+[0m[[0m[0mdebug[0m] [0m[0minstrumenting /Users/manikhossain/Downloads/SOEN6441Project/target/scala-2.13/classes/controllers/ReverseTweetController.class[0m
+[0m[[0m[0mdebug[0m] [0m[0minstrumenting /Users/manikhossain/Downloads/SOEN6441Project/target/scala-2.13/classes/controllers/routes.class[0m
+[0m[[0m[0mdebug[0m] [0m[0minstrumenting /Users/manikhossain/Downloads/SOEN6441Project/target/scala-2.13/classes/views/html/wordLevelStats.class[0m
+[0m[[0m[0mdebug[0m] [0m[0minstrumenting /Users/manikhossain/Downloads/SOEN6441Project/target/scala-2.13/classes/views/html/users.class[0m
+[0m[[0m[0mdebug[0m] [0m[0minstrumenting /Users/manikhossain/Downloads/SOEN6441Project/target/scala-2.13/classes/views/html/location.class[0m
+[0m[[0m[0mdebug[0m] [0m[0minstrumenting /Users/manikhossain/Downloads/SOEN6441Project/target/scala-2.13/classes/views/html/main$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0minstrumenting /Users/manikhossain/Downloads/SOEN6441Project/target/scala-2.13/classes/views/html/index.class[0m
+[0m[[0m[0mdebug[0m] [0m[0minstrumenting /Users/manikhossain/Downloads/SOEN6441Project/target/scala-2.13/classes/views/html/usersTweetList.class[0m
+[0m[[0m[0mdebug[0m] [0m[0minstrumenting /Users/manikhossain/Downloads/SOEN6441Project/target/scala-2.13/classes/views/html/listTweet$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0minstrumenting /Users/manikhossain/Downloads/SOEN6441Project/target/scala-2.13/classes/views/html/listTweet.class[0m
+[0m[[0m[0mdebug[0m] [0m[0minstrumenting /Users/manikhossain/Downloads/SOEN6441Project/target/scala-2.13/classes/views/html/wordLevelStats$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0minstrumenting /Users/manikhossain/Downloads/SOEN6441Project/target/scala-2.13/classes/views/html/users$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0minstrumenting /Users/manikhossain/Downloads/SOEN6441Project/target/scala-2.13/classes/views/html/index$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0minstrumenting /Users/manikhossain/Downloads/SOEN6441Project/target/scala-2.13/classes/views/html/usersTweetList$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0minstrumenting /Users/manikhossain/Downloads/SOEN6441Project/target/scala-2.13/classes/views/html/location$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0minstrumenting /Users/manikhossain/Downloads/SOEN6441Project/target/scala-2.13/classes/views/html/main.class[0m
+[0m[[0m[0mdebug[0m] [0m[0minstrumenting /Users/manikhossain/Downloads/SOEN6441Project/target/scala-2.13/classes/router/RoutesPrefix.class[0m
+[0m[[0m[0mdebug[0m] [0m[0minstrumenting /Users/manikhossain/Downloads/SOEN6441Project/target/scala-2.13/classes/router/RoutesPrefix$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0minstrumenting /Users/manikhossain/Downloads/SOEN6441Project/target/scala-2.13/classes/router/Routes$$anonfun$routes$1.class[0m
+[0m[[0m[0mdebug[0m] [0m[0minstrumenting /Users/manikhossain/Downloads/SOEN6441Project/target/scala-2.13/classes/router/Routes.class[0m

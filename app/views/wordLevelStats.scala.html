@@ -1,0 +1,23 @@
+@(finalMap:Map[String, Long])
+
+@main("statistics") {
+	
+	<h2>Word Level Statistics</h2>
+	
+	<table>
+     	<thead>
+	 		<tr>
+		       <td><h3>Word</h3></td>
+		       <td><h3>Count</h3></td>
+       		</tr>    
+        </thead>
+        <tbody>
+        @for((key, value) <- finalMap) {
+		    <tr><td>@key</td><td>@value</td></tr>
+		}
+        </tbody>
+     </table>
+	
+	
+	
+}

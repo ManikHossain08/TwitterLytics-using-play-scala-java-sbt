@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>listTweet.template.scala</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=2;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Jacoco Coverage Report</a> &gt; <a href="index.source.html" class="el_package">views.html</a> &gt; <span class="el_source">listTweet.template.scala</span></div><h1>listTweet.template.scala</h1><pre class="source lang-java linenums">
+package views.html
+
+import _root_.play.twirl.api.TwirlFeatureImports._
+import _root_.play.twirl.api.TwirlHelperImports._
+import _root_.play.twirl.api.Html
+import _root_.play.twirl.api.JavaScript
+import _root_.play.twirl.api.Txt
+import _root_.play.twirl.api.Xml
+import models._
+import controllers._
+import play.api.i18n._
+import views.html._
+import play.api.templates.PlayMagic._
+import java.lang._
+import java.util._
+import play.core.j.PlayMagicForJava._
+import play.mvc._
+import play.api.data.Field
+import play.data._
+import play.core.j.PlayFormsMagicForJava._
+import scala.jdk.CollectionConverters._
+/*1.2*/import play.mvc.Http.Request
+
+<span class="pc" id="L25">object listTweet extends _root_.play.twirl.api.BaseScalaTemplate[play.twirl.api.HtmlFormat.Appendable,_root_.play.twirl.api.Format[play.twirl.api.HtmlFormat.Appendable]](play.twirl.api.HtmlFormat) with _root_.play.twirl.api.Template4[List[Tweet],Form[TweetData],Request,play.i18n.Messages,play.twirl.api.HtmlFormat.Appendable] {</span>
+
+  /**/
+  def apply/*2.2*/(tweets: List[Tweet], form: Form[TweetData])(implicit request: Request, messages: play.i18n.Messages):play.twirl.api.HtmlFormat.Appendable = {
+<span class="fc" id="L29">    _display_ {</span>
+      {
+
+
+<span class="fc" id="L33">Seq[Any](format.raw/*3.1*/(&quot;&quot;&quot;</span>
+<span class="fc" id="L34">&quot;&quot;&quot;),_display_(/*4.2*/main(&quot;Tweets&quot;)/*4.16*/ {_display_(Seq[Any](format.raw/*4.18*/(&quot;&quot;&quot;</span>
+
+<span class="fc" id="L36">    &quot;&quot;&quot;),format.raw/*6.5*/(&quot;&quot;&quot;&lt;h1&gt;Welcome to Tweetanlytics&lt;/h1&gt;</span>
+    
+         
+    
+<span class="fc" id="L40">    &quot;&quot;&quot;),_display_(/*10.6*/helper/*10.12*/.form(routes.TweetController.fetchTweets)/*10.53*/ {_display_(Seq[Any](format.raw/*10.55*/(&quot;&quot;&quot;</span>
+    &quot;&quot;&quot;),_display_(/*11.6*/helper/*11.12*/.CSRF.formField),format.raw/*11.27*/(&quot;&quot;&quot;
+    
+        &quot;&quot;&quot;),format.raw/*13.9*/(&quot;&quot;&quot;&lt;div class=&quot;input-group mb-1&quot;&gt;
+        &quot;&quot;&quot;),_display_(/*14.10*/helper/*14.16*/.inputText(form(&quot;keyword&quot;), 'placeholder-&gt;&quot;Search Keyword&quot;, 'class-&gt;&quot;form-control&quot;)),format.raw/*14.99*/(&quot;&quot;&quot;
+        &quot;&quot;&quot;),format.raw/*15.9*/(&quot;&quot;&quot;&lt;/div&gt;
+       
+        &lt;button type=&quot;submit&quot;&gt;Go&lt;/button&gt;
+
+<span class="fc" id="L49">    &quot;&quot;&quot;)))}),format.raw/*19.6*/(&quot;&quot;&quot;</span>
+<span class="fc" id="L50">    &quot;&quot;&quot;),format.raw/*20.5*/(&quot;&quot;&quot;&lt;style&gt;</span>
+<span class="fc" id="L51">        table, th, td &quot;&quot;&quot;),format.raw/*21.23*/(&quot;&quot;&quot;{&quot;&quot;&quot;),format.raw/*21.24*/(&quot;&quot;&quot;</span>
+<span class="fc" id="L52">         &quot;&quot;&quot;),format.raw/*22.10*/(&quot;&quot;&quot;border: 1px solid black;</span>
+<span class="fc" id="L53">        &quot;&quot;&quot;),format.raw/*23.9*/(&quot;&quot;&quot;}&quot;&quot;&quot;),format.raw/*23.10*/(&quot;&quot;&quot;</span>
+<span class="fc" id="L54">        &quot;&quot;&quot;),format.raw/*24.9*/(&quot;&quot;&quot;&lt;/style&gt;</span>
+<span class="pc bpc" id="L55" title="1 of 2 branches missed.">    &quot;&quot;&quot;),_display_(/*25.6*/if(!tweets.isEmpty)/*25.25*/    {_display_(Seq[Any](format.raw/*25.30*/(&quot;&quot;&quot;</span>
+<span class="nc" id="L56">    &quot;&quot;&quot;),format.raw/*26.5*/(&quot;&quot;&quot;&lt;table&gt;</span>
+        &lt;thead&gt;
+          
+        &lt;/thead&gt;
+        &lt;tbody&gt;
+        
+        
+       &lt;tr&gt;
+<span class="nc" id="L64">        &lt;td&gt;&lt;b&gt;SEACH TERM &lt;a href=&quot;&quot;&quot;),_display_(/*34.36*/routes/*34.42*/.TweetController.wordLevelStatistics(tweets.get(0).keyword)),format.raw/*34.101*/(&quot;&quot;&quot; &quot;&quot;&quot;),format.raw/*34.102*/(&quot;&quot;&quot;target=&quot;_blank&quot;&gt;Get stats for keyword &quot;&quot;&quot;),_display_(/*34.141*/tweets/*34.147*/.get(0).keyword),format.raw/*34.162*/(&quot;&quot;&quot;&lt;/a&gt;&lt;/b&gt;&lt;/td&gt;</span>
+        &lt;td&gt;&lt;b&gt;USER NAME&lt;/b&gt;&lt;/td&gt;
+        &lt;td&gt;&lt;b&gt;LOCATION&lt;/b&gt;&lt;/td&gt;
+        &lt;td&gt;&lt;b&gt;TWEETS&lt;/b&gt;&lt;/td&gt;
+        &lt;td&gt;&lt;b&gt;SENTIMENTS&lt;/b&gt;&lt;/td&gt;
+        
+
+        &lt;/tr&gt;
+        
+        
+<span class="nc" id="L74">        &quot;&quot;&quot;),_display_(/*44.10*/for(t &lt;- tweets) yield /*44.26*/ {_display_(Seq[Any](format.raw/*44.28*/(&quot;&quot;&quot;</span>
+            
+           &quot;&quot;&quot;),format.raw/*46.12*/(&quot;&quot;&quot;&lt;tr&gt;
+            &lt;td&gt;&quot;&quot;&quot;),_display_(/*47.18*/t/*47.19*/.keyword),format.raw/*47.27*/(&quot;&quot;&quot;&lt;/td&gt;
+            &lt;td&gt; &lt;a href=&quot;&quot;&quot;),_display_(/*48.27*/routes/*48.33*/.TweetController.fetchUsers(t.getUser.getScreenName)),format.raw/*48.85*/(&quot;&quot;&quot; &quot;&quot;&quot;),format.raw/*48.86*/(&quot;&quot;&quot;target=&quot;_blank&quot;&gt; &quot;&quot;&quot;),_display_(/*48.104*/t/*48.105*/.getUser.getName),format.raw/*48.121*/(&quot;&quot;&quot;&lt;/a&gt;&lt;/td&gt;
+            &lt;td&gt; &quot;&quot;&quot;),_display_(/*49.19*/t/*49.20*/.getUser.getLocation),format.raw/*49.40*/(&quot;&quot;&quot;&lt;/a&gt;&lt;/td&gt;
+            &lt;td&gt;&quot;&quot;&quot;),_display_(/*50.18*/t/*50.19*/.getTweet),format.raw/*50.28*/(&quot;&quot;&quot;
+            
+            &quot;&quot;&quot;),_display_(/*52.14*/for(s &lt;- t.getArrayoftags) yield /*52.40*/{_display_(Seq[Any](format.raw/*52.41*/(&quot;&quot;&quot;
+            &quot;&quot;&quot;),format.raw/*53.13*/(&quot;&quot;&quot;&lt;a href=&quot;&quot;&quot;),_display_(/*53.22*/routes/*53.28*/.TweetController.fetchHashtags(t.getHashtag)),format.raw/*53.72*/(&quot;&quot;&quot;  &quot;&quot;&quot;),format.raw/*53.74*/(&quot;&quot;&quot;target=&quot;_blank&quot;&gt;&quot;&quot;&quot;),_display_(/*53.91*/s/*53.92*/.getText),format.raw/*53.100*/(&quot;&quot;&quot;&lt;/a&gt;
+            
+            &quot;&quot;&quot;)))}),format.raw/*55.14*/(&quot;&quot;&quot;
+            &quot;&quot;&quot;),_display_(/*56.14*/{
+        if(t.getSentimentRatings &lt;0){
+             &lt;td&gt;:-(&lt;/td&gt;
+            }
+        else if(t.getSentimentRatings == 0){
+            &lt;td&gt;:-|&lt;/td&gt;
+            }
+         else if(t.getSentimentRatings &gt;0){
+             &lt;td&gt;:-)&lt;/td&gt;
+            }
+        }),format.raw/*66.10*/(&quot;&quot;&quot;
+            
+           &quot;&quot;&quot;),format.raw/*68.12*/(&quot;&quot;&quot;&lt;/tr&gt;
+       
+<span class="nc" id="L100">        &quot;&quot;&quot;)))}),format.raw/*70.10*/(&quot;&quot;&quot;</span>
+        
+<span class="nc" id="L102">        &quot;&quot;&quot;),format.raw/*72.9*/(&quot;&quot;&quot;&lt;/tbody&gt;</span>
+       
+    &lt;/table&gt;
+<span class="fc" id="L105">&quot;&quot;&quot;)))}),format.raw/*75.2*/(&quot;&quot;&quot;</span>
+<span class="fc" id="L106">    &quot;&quot;&quot;),format.raw/*76.5*/(&quot;&quot;&quot;&lt;hr/&gt;</span>
+    
+   
+
+<span class="fc" id="L110">    &quot;&quot;&quot;),format.raw/*80.66*/(&quot;&quot;&quot;</span>
+<span class="pc bpc" id="L111" title="1 of 2 branches missed.">    &quot;&quot;&quot;),_display_(/*81.6*/if(form.hasGlobalErrors)/*81.30*/ {_display_(Seq[Any](format.raw/*81.32*/(&quot;&quot;&quot;</span>
+<span class="nc" id="L112">        &quot;&quot;&quot;),_display_(/*82.10*/form/*82.14*/.globalErrors.asScala.map/*82.39*/ { error: play.data.validation.ValidationError =&gt;_display_(Seq[Any](format.raw/*82.88*/(&quot;&quot;&quot;</span>
+            &quot;&quot;&quot;),format.raw/*83.13*/(&quot;&quot;&quot;&lt;div&gt;
+                &quot;&quot;&quot;),_display_(/*84.18*/error/*84.23*/.key),format.raw/*84.27*/(&quot;&quot;&quot;: &quot;&quot;&quot;),_display_(/*84.30*/error/*84.35*/.message),format.raw/*84.43*/(&quot;&quot;&quot;
+            &quot;&quot;&quot;),format.raw/*85.13*/(&quot;&quot;&quot;&lt;/div&gt;
+<span class="nc" id="L116">        &quot;&quot;&quot;)))}),format.raw/*86.10*/(&quot;&quot;&quot;</span>
+<span class="fc" id="L117">    &quot;&quot;&quot;)))}),format.raw/*87.6*/(&quot;&quot;&quot;</span>
+
+    
+    
+
+<span class="fc" id="L122">&quot;&quot;&quot;)))}),format.raw/*92.2*/(&quot;&quot;&quot;</span>
+&quot;&quot;&quot;))
+      }
+    }
+  }
+
+<span class="fc" id="L128">  def render(tweets:List[Tweet],form:Form[TweetData],request:Request,messages:play.i18n.Messages): play.twirl.api.HtmlFormat.Appendable = apply(tweets,form)(request,messages)</span>
+
+<span class="nc" id="L130">  def f:((List[Tweet],Form[TweetData]) =&gt; (Request,play.i18n.Messages) =&gt; play.twirl.api.HtmlFormat.Appendable) = (tweets,form) =&gt; (request,messages) =&gt; apply(tweets,form)(request,messages)</span>
+
+<span class="nc" id="L132">  def ref: this.type = this</span>
+
+}
+
+
+              /*
+                  -- GENERATED --
+                  DATE: 2020-11-13T13:29:45.726518
+                  SOURCE: /Users/manikhossain/Downloads/SOEN6441Project/app/views/listTweet.scala.html
+                  HASH: 108096e466a4939a922a64b3868c645cf066eaff
+                  MATRIX: 610-&gt;1|995-&gt;31|1190-&gt;133|1217-&gt;135|1239-&gt;149|1278-&gt;151|1310-&gt;157|1395-&gt;216|1410-&gt;222|1460-&gt;263|1500-&gt;265|1532-&gt;271|1547-&gt;277|1583-&gt;292|1624-&gt;306|1691-&gt;346|1706-&gt;352|1810-&gt;435|1846-&gt;444|1939-&gt;507|1971-&gt;512|2029-&gt;542|2058-&gt;543|2096-&gt;553|2156-&gt;586|2185-&gt;587|2221-&gt;596|2261-&gt;610|2289-&gt;629|2332-&gt;634|2364-&gt;639|2524-&gt;772|2539-&gt;778|2620-&gt;837|2650-&gt;838|2717-&gt;877|2733-&gt;883|2770-&gt;898|2995-&gt;1096|3027-&gt;1112|3067-&gt;1114|3120-&gt;1139|3169-&gt;1161|3179-&gt;1162|3208-&gt;1170|3267-&gt;1202|3282-&gt;1208|3355-&gt;1260|3384-&gt;1261|3430-&gt;1279|3441-&gt;1280|3479-&gt;1296|3534-&gt;1324|3544-&gt;1325|3585-&gt;1345|3639-&gt;1372|3649-&gt;1373|3679-&gt;1382|3733-&gt;1409|3775-&gt;1435|3814-&gt;1436|3855-&gt;1449|3891-&gt;1458|3906-&gt;1464|3971-&gt;1508|4001-&gt;1510|4045-&gt;1527|4055-&gt;1528|4085-&gt;1536|4147-&gt;1567|4188-&gt;1581|4466-&gt;1838|4519-&gt;1863|4573-&gt;1886|4618-&gt;1904|4679-&gt;1935|4711-&gt;1940|4759-&gt;2021|4791-&gt;2027|4824-&gt;2051|4864-&gt;2053|4901-&gt;2063|4914-&gt;2067|4948-&gt;2092|5035-&gt;2141|5076-&gt;2154|5126-&gt;2177|5140-&gt;2182|5165-&gt;2186|5195-&gt;2189|5209-&gt;2194|5238-&gt;2202|5279-&gt;2215|5326-&gt;2231|5362-&gt;2237|5406-&gt;2251
+                  LINES: 23-&gt;1|28-&gt;2|33-&gt;3|34-&gt;4|34-&gt;4|34-&gt;4|36-&gt;6|40-&gt;10|40-&gt;10|40-&gt;10|40-&gt;10|41-&gt;11|41-&gt;11|41-&gt;11|43-&gt;13|44-&gt;14|44-&gt;14|44-&gt;14|45-&gt;15|49-&gt;19|50-&gt;20|51-&gt;21|51-&gt;21|52-&gt;22|53-&gt;23|53-&gt;23|54-&gt;24|55-&gt;25|55-&gt;25|55-&gt;25|56-&gt;26|64-&gt;34|64-&gt;34|64-&gt;34|64-&gt;34|64-&gt;34|64-&gt;34|64-&gt;34|74-&gt;44|74-&gt;44|74-&gt;44|76-&gt;46|77-&gt;47|77-&gt;47|77-&gt;47|78-&gt;48|78-&gt;48|78-&gt;48|78-&gt;48|78-&gt;48|78-&gt;48|78-&gt;48|79-&gt;49|79-&gt;49|79-&gt;49|80-&gt;50|80-&gt;50|80-&gt;50|82-&gt;52|82-&gt;52|82-&gt;52|83-&gt;53|83-&gt;53|83-&gt;53|83-&gt;53|83-&gt;53|83-&gt;53|83-&gt;53|83-&gt;53|85-&gt;55|86-&gt;56|96-&gt;66|98-&gt;68|100-&gt;70|102-&gt;72|105-&gt;75|106-&gt;76|110-&gt;80|111-&gt;81|111-&gt;81|111-&gt;81|112-&gt;82|112-&gt;82|112-&gt;82|112-&gt;82|113-&gt;83|114-&gt;84|114-&gt;84|114-&gt;84|114-&gt;84|114-&gt;84|114-&gt;84|115-&gt;85|116-&gt;86|117-&gt;87|122-&gt;92
+                  -- GENERATED --
+              */
+          
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>

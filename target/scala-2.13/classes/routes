@@ -1,0 +1,17 @@
+# Routes
+# This file defines all application routes (Higher priority routes first)
+# ~~~~
+
+# Home page
+GET     /                           controllers.TweetController.index
+
+# Widgets
+GET     /welcome                    controllers.TweetController.listTweets(request:Request)
+POST    /welcome                    controllers.TweetController.fetchTweets(request:Request)
+GET 	/location					controllers.TweetController.fetchHashtags(hashtag:String, request:Request)
+GET 	/users						controllers.TweetController.fetchUsers(users:String)
+GET 	/userTweets					controllers.TweetController.getUserTweets(users:String)
+GET		/statistics					controllers.TweetController.wordLevelStatistics(keyword:String)
+
+# Map static resources from the /public folder to the /assets URL path
+GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)

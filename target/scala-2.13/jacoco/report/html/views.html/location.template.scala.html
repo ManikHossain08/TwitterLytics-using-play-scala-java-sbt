@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>location.template.scala</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=2;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Jacoco Coverage Report</a> &gt; <a href="index.source.html" class="el_package">views.html</a> &gt; <span class="el_source">location.template.scala</span></div><h1>location.template.scala</h1><pre class="source lang-java linenums">
+package views.html
+
+import _root_.play.twirl.api.TwirlFeatureImports._
+import _root_.play.twirl.api.TwirlHelperImports._
+import _root_.play.twirl.api.Html
+import _root_.play.twirl.api.JavaScript
+import _root_.play.twirl.api.Txt
+import _root_.play.twirl.api.Xml
+import models._
+import controllers._
+import play.api.i18n._
+import views.html._
+import play.api.templates.PlayMagic._
+import java.lang._
+import java.util._
+import play.core.j.PlayMagicForJava._
+import play.mvc._
+import play.api.data.Field
+import play.data._
+import play.core.j.PlayFormsMagicForJava._
+import scala.jdk.CollectionConverters._
+
+<span class="pc" id="L24">object location extends _root_.play.twirl.api.BaseScalaTemplate[play.twirl.api.HtmlFormat.Appendable,_root_.play.twirl.api.Format[play.twirl.api.HtmlFormat.Appendable]](play.twirl.api.HtmlFormat) with _root_.play.twirl.api.Template1[List[Tweet],play.twirl.api.HtmlFormat.Appendable] {</span>
+
+  /* location Template File */
+  def apply/*2.2*/(tweetsLocation:List[Tweet]):play.twirl.api.HtmlFormat.Appendable = {
+<span class="fc" id="L28">    _display_ {</span>
+      {
+
+
+<span class="fc" id="L32">Seq[Any](format.raw/*3.1*/(&quot;&quot;&quot;</span>
+
+
+
+<span class="fc" id="L36">&quot;&quot;&quot;),_display_(/*7.2*/main(&quot;Hashtag&quot;)/*7.17*/ {_display_(Seq[Any](format.raw/*7.19*/(&quot;&quot;&quot;</span>
+	
+<span class="fc" id="L38">	&quot;&quot;&quot;),format.raw/*9.2*/(&quot;&quot;&quot;&lt;h2&gt;Hashtag&lt;/h2&gt;</span>
+	
+	 &lt;table border=&quot;1&quot;&gt;
+        &lt;thead&gt;
+        
+       &lt;tr&gt;
+       &lt;td&gt;&lt;b&gt;NAME&lt;/b&gt;&lt;/td&gt;
+       &lt;td&gt;&lt;b&gt;LOCATION&lt;/b&gt;&lt;/td&gt;
+       &lt;td&gt;&lt;b&gt;TWEETS&lt;/b&gt;&lt;/td&gt;
+       &lt;td&gt;&lt;b&gt;SENTIMENTS&lt;/b&gt;&lt;/td&gt;
+       
+       &lt;/tr&gt;
+           
+        &lt;/thead&gt;
+        &lt;tbody&gt;
+        
+        
+<span class="fc" id="L55">        &quot;&quot;&quot;),_display_(/*26.10*/for(t &lt;- tweetsLocation) yield /*26.34*/ {_display_(Seq[Any](format.raw/*26.36*/(&quot;&quot;&quot;</span>
+        
+        	
+            &quot;&quot;&quot;),format.raw/*29.13*/(&quot;&quot;&quot;&lt;tr&gt;
+            
+            &lt;td&gt;&quot;&quot;&quot;),_display_(/*31.18*/t/*31.19*/.getUser.getName),format.raw/*31.35*/(&quot;&quot;&quot;&lt;/td&gt;
+            &lt;td&gt;&quot;&quot;&quot;),_display_(/*32.18*/t/*32.19*/.getUser.getLocation),format.raw/*32.39*/(&quot;&quot;&quot;&lt;/td&gt;
+            &lt;td&gt;&quot;&quot;&quot;),_display_(/*33.18*/t/*33.19*/.getTweet),format.raw/*33.28*/(&quot;&quot;&quot;&lt;/td&gt;
+             &quot;&quot;&quot;),_display_(/*34.15*/{
+        if(t.getSentimentRatings &lt;0){
+             &lt;td&gt;:-(&lt;/td&gt;
+            }
+        else if(t.getSentimentRatings == 0){
+            &lt;td&gt;:-|&lt;/td&gt;
+            }
+         else if(t.getSentimentRatings &gt;0){
+             &lt;td&gt;:-)&lt;/td&gt;
+            }
+        }),format.raw/*44.10*/(&quot;&quot;&quot;
+            
+            &quot;&quot;&quot;),format.raw/*46.13*/(&quot;&quot;&quot;&lt;/tr&gt;
+            
+<span class="fc" id="L77">        &quot;&quot;&quot;)))}),format.raw/*48.10*/(&quot;&quot;&quot;</span>
+       
+<span class="fc" id="L79">        &quot;&quot;&quot;),format.raw/*50.9*/(&quot;&quot;&quot;&lt;/tbody&gt;</span>
+        
+    &lt;/table&gt;
+	
+<span class="fc" id="L83">	&quot;&quot;&quot;)))}),format.raw/*54.3*/(&quot;&quot;&quot;</span>
+&quot;&quot;&quot;))
+      }
+    }
+  }
+
+<span class="fc" id="L89">  def render(tweetsLocation:List[Tweet]): play.twirl.api.HtmlFormat.Appendable = apply(tweetsLocation)</span>
+
+<span class="nc" id="L91">  def f:((List[Tweet]) =&gt; play.twirl.api.HtmlFormat.Appendable) = (tweetsLocation) =&gt; apply(tweetsLocation)</span>
+
+<span class="nc" id="L93">  def ref: this.type = this</span>
+
+}
+
+
+              /*
+                  -- GENERATED --
+                  DATE: 2020-11-13T13:29:45.741161
+                  SOURCE: /Users/manikhossain/Downloads/SOEN6441Project/app/views/location.scala.html
+                  HASH: 4546ff1ca50cd0ef15d0312b638a2691c0b08838
+                  MATRIX: 939-&gt;30|1061-&gt;59|1091-&gt;64|1114-&gt;79|1153-&gt;81|1183-&gt;85|1504-&gt;379|1544-&gt;403|1584-&gt;405|1644-&gt;437|1706-&gt;472|1716-&gt;473|1753-&gt;489|1803-&gt;512|1813-&gt;513|1854-&gt;533|1904-&gt;556|1914-&gt;557|1944-&gt;566|1991-&gt;586|2269-&gt;843|2323-&gt;869|2382-&gt;897|2426-&gt;914|2491-&gt;949
+                  LINES: 27-&gt;2|32-&gt;3|36-&gt;7|36-&gt;7|36-&gt;7|38-&gt;9|55-&gt;26|55-&gt;26|55-&gt;26|58-&gt;29|60-&gt;31|60-&gt;31|60-&gt;31|61-&gt;32|61-&gt;32|61-&gt;32|62-&gt;33|62-&gt;33|62-&gt;33|63-&gt;34|73-&gt;44|75-&gt;46|77-&gt;48|79-&gt;50|83-&gt;54
+                  -- GENERATED --
+              */
+          
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>
