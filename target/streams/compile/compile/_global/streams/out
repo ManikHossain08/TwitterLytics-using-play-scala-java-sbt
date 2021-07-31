@@ -1,7 +1,0 @@
-[0m[[0m[33mwarn[0m] [0m[0m/Users/manikhossain/Downloads/TwitterLytics-using-play-scala-java-sbt/app/views/listTweet.scala.html:14:44: symbol literal is deprecated; use Symbol("placeholder") instead[0m
-[0m[[0m[33mwarn[0m] [0m[0m        @helper.inputText(form("keyword"), 'placeholder->"Search Keyword", 'class->"form-control")[0m
-[0m[[0m[33mwarn[0m] [0m[0m                                           ^[0m
-[0m[[0m[33mwarn[0m] [0m[0m/Users/manikhossain/Downloads/TwitterLytics-using-play-scala-java-sbt/app/views/listTweet.scala.html:14:76: symbol literal is deprecated; use Symbol("class") instead[0m
-[0m[[0m[33mwarn[0m] [0m[0m        @helper.inputText(form("keyword"), 'placeholder->"Search Keyword", 'class->"form-control")[0m
-[0m[[0m[33mwarn[0m] [0m[0m                                                                           ^[0m
-[0m[[0m[33mwarn[0m] [0m[0mtwo warnings found[0m
